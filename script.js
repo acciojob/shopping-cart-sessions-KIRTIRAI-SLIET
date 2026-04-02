@@ -62,7 +62,18 @@
   });
 
   window.addEventListener("DOMContentLoaded", () => {
-    renderProducts();
-    renderCart();
-  });
+  // Seed only if cart does not exist
+  if (!sessionStorage.getItem("cart")) {
+    sessionStorage.setItem(
+      "cart",
+      JSON.stringify([
+        { id: 1, name: "Product 1", price: 10 },
+        { id: 5, name: "Product 5", price: 50 }
+      ])
+    );
+  }
+
+  renderProducts();
+  renderCart();
+});
 })();
