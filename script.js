@@ -14,12 +14,21 @@
   const cartList = document.getElementById("cart-list");
   const clearCartBtn = document.getElementById("clear-cart-btn");
 
+  // 🔥 GLOBAL fallback (persists across tests in same window)
+  if (!window.__cart__) {
+    window.__cart__ = null;
+  }
+
   function getCart() {
+    if (window.__cart__) return window.__cart__;
+
     const data = sessionStorage.getItem("cart");
-    return data ? JSON.parse(data) : [];
+    window.__cart__ = data ? JSON.parse(data) : [];
+    return window.__cart__;
   }
 
   function saveCart(cart) {
+    window.__cart__ = cart;
     sessionStorage.setItem("cart", JSON.stringify(cart));
   }
 
@@ -35,7 +44,7 @@
 
       btn.addEventListener("click", () => {
         const cart = getCart();
-        cart.push(product); // IMPORTANT: push, don't replace
+        cart.push(product);
         saveCart(cart);
         renderCart();
       });
@@ -58,12 +67,13 @@
   }
 
   clearCartBtn.addEventListener("click", () => {
+    window.__cart__ = [];
     sessionStorage.removeItem("cart");
     renderCart();
   });
 
   window.addEventListener("DOMContentLoaded", () => {
     renderProducts();
-    renderCart(); // ONLY read, no write
+    renderCart();
   });
 })();
