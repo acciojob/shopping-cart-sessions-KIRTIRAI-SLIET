@@ -9,10 +9,66 @@ const products = [
   { id: 5, name: "Product 5", price: 50 },
 ];
 
-// DOM elements
+const productList = document.getElementById("product-list");
+const cartList = document.getElementById("cart-list");
+const clearCartBtn = document.getElementById("clear-cart-btn");
+
+function getCart() {
+  return JSON.parse(sessionStorage.getItem("cart")) || [];
+}
+
+function saveCart(cart) {
+  sessionStorage.setItem("cart", JSON.stringify(cart));
+}
+
+function renderProducts() {
+  productList.innerHTML = "";
+
+  products.forEach(product => {
+    const li = document.createElement("li");
+    li.textContent = `${product.name} - $${product.price}`;
+
+    const btn = document.createElement("button");
+    btn.textContent = "Add to Cart";
+
+    btn.addEventListener("click", () => addToCart(product));
+
+    li.appendChild(btn);
+    productList.appendChild(li);
+  });
+}
+
+function renderCart() {
+  const cart = getCart();
+  cartList.innerHTML = "";
+
+  cart.forEach(item => {
+    const li = document.createElement("li");
+    li.textContent = `${item.name} - $${item.price}`;
+    cartList.appendChild(li);
+  });
+}
+
+function addToCart(product) {
+  const cart = getCart();
+  cart.push(product);
+  saveCart(cart);
+  renderCart();
+}
+
+clearCartBtn.addEventListener("click", () => {
+  sessionStorage.removeItem("cart");
+  renderCart();
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  renderProducts();
+  renderCart();
+});
+
 const productList = document.getElementById("product-list");
 
-// Render product list
+
 function renderProducts() {
   products.forEach((product) => {
     const li = document.createElement("li");
@@ -21,18 +77,18 @@ function renderProducts() {
   });
 }
 
-// Render cart list
+
 function renderCart() {}
 
-// Add item to cart
+
 function addToCart(productId) {}
 
-// Remove item from cart
+
 function removeFromCart(productId) {}
 
-// Clear cart
+
 function clearCart() {}
 
-// Initial render
+
 renderProducts();
 renderCart();
