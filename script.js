@@ -14,7 +14,6 @@
   const cartList = document.getElementById("cart-list");
   const clearCartBtn = document.getElementById("clear-cart-btn");
 
-  // 🔥 GLOBAL fallback (persists across tests in same window)
   if (!window.__cart__) {
     window.__cart__ = null;
   }
