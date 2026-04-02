@@ -15,8 +15,9 @@
   const clearCartBtn = document.getElementById("clear-cart-btn");
 
   function getCart() {
-    return JSON.parse(sessionStorage.getItem("cart")) || [];
-  }
+	  const data = sessionStorage.getItem("cart");
+	  return data ? JSON.parse(data) : [];
+   }
 
   function saveCart(cart) {
     sessionStorage.setItem("cart", JSON.stringify(cart));
